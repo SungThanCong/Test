@@ -1,0 +1,266 @@
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@500&display=swap" rel="stylesheet">
+    <title>
+        GAME LẬT BÀI
+    </title>
+</head> 
+<body>
+    <style>
+        html{
+            background-color: rgba(0, 174, 255, 0.466);
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            border: none;
+            box-sizing: content-box;
+            font-size: 100%;
+            font-family: 'Encode Sans SC', sans-serif;
+            text-align: center; 
+        }
+        h1{
+            font-size: 2.6rem;
+        }
+        h3{
+           font-size: 1.6rem;
+        }
+        .time{
+            margin-top: 30px;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
+        }
+        #seconds{
+            width: 50px;
+            display: inline-block;
+        }
+        #tens{
+            width: 50px;
+            display: inline-block;
+        }
+        #container{
+            margin: auto;
+            width: 1000px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap; 
+        }
+        .card{
+            margin: 20px;
+            width: 170px;
+            height: 250px;
+            /* background-image: linear-gradient(90deg,orange,rgb(255, 0, 0)); */
+            
+            border-radius: 10px;
+            box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.37);
+            cursor: pointer;
+            position: absolute;
+            top:-20px;
+            left:-20px;
+            display: none;
+        }
+        .unknow{
+            opacity: 1;
+        }
+        .know{
+            opacity: 0.5;
+        }
+        .play{
+            height: 30px;
+            font-size: 25px;
+            background-color: white;
+        }
+        .visible{
+            display: block;
+            animation-name: anima;
+            animation-duration: 4s;
+            animation-iteration-count:infinite;
+            
+        }
+        @keyframes anima{
+            0%{
+                background-color: orange;
+            } 
+            50%{
+                background-color: red;
+            }
+            100%{
+                background-color: orange;
+            }
+        }
+        .behind{
+            margin: 20px;
+            width: 170px;
+            height: 250px;
+            border-radius: 10px;
+            box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.37);
+            cursor: pointer;
+            position: relative;
+        }
+    </style>
+    <div class="wrapper">
+        <h1>JavaScript pairs Game</h1>
+        <h3>Click any card to begin</h3>
+        <p class="time"><span id="seconds">00</span>:<span id="tens">00</span></p>
+        <p id ="text"></p>
+        <div class=play>PLAY</div>
+        <div id="container">
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+               
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+                
+            </div>
+            <div class="unknow">
+                <div class = "behind">
+                    <div class = "card visible"></div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <script>
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
+        const the = $$(".unknow");
+        const cards = $$(".card");
+        const play = $(".play");
+        const seconds =$("#seconds");
+        const tens = $("#tens");
+        const behind = $$(".behind");
+        var counter = 0;
+        var result =[];
+        var var_seconds = 00;
+        var mili_seconds = 00;
+        var Interval;
+        const urls = ["image/img-1.png","image/img-2.jpg","image/img-3.jpg","image/img-4.jpg"];
+        var stt=[];
+        var pre;
+        function randomArray(){
+            var a;
+            while(stt.length != 8){
+                a = Math.floor(Math.random() * 4);
+                if(stt.indexOf(a) != stt.lastIndexOf(a));
+                else {
+                    stt.push(a);
+                }
+            }
+        }
+        function solveBehind(){
+            for (let i=0;i<8;i++ ){
+                behind[i].style.backgroundImage = `url(${urls[stt[i]]}`;
+                the[i].dataset.item = stt[i];
+                cards[i].dataset.item=stt[i];
+            }
+        }
+        function startTime(){
+            clearInterval(Interval);
+            Interval = setInterval(Timer,10);
+        }
+        function Timer(){
+            mili_seconds++;
+            if(mili_seconds <= 9){
+                tens.innerHTML = "0" + mili_seconds;
+            }
+            else if(mili_seconds <= 99 ){
+                tens.innerHTML = mili_seconds;
+            }
+            else{
+                var_seconds++;
+                mili_seconds -=100;
+                tens.innerHTML = "00";
+            }
+            if(var_seconds<=9){
+                seconds.innerHTML = "0" + var_seconds;
+            }else seconds.innerHTML = var_seconds;
+        }
+        function win(){
+            clearInterval(Interval);
+            play.innerHTML = `Bạn đã chiến thắng. Thời gian mất ${var_seconds},${mili_seconds} giây`;
+            
+        }
+        function startGame(){
+            for(let i=0;i<8;i++){
+                cards[i].onclick = function(){
+                    this.classList.remove("visible");
+                    result.push(this.dataset.item);
+                    setTimeout(() => {
+                        if(result.length>1){
+                          if(result[0]===result[1]){
+                            this.parentNode.classList.remove("unknow");
+                            this.parentNode.classList.add("know");
+                            pre.parentNode.classList.add("know");
+                            pre.parentNode.classList.add("unknow");
+                            result = [];
+                            counter++;
+                            if(counter==4){
+                                win();
+                            }
+                        }
+                          else{
+                           
+                            this.classList.add("visible");
+                            pre.classList.add("visible");
+                            result = [];  
+                        }   
+                     }
+                     pre = this;
+                    }, 300);
+                   
+                    
+                }
+            }
+        }
+        
+        play.onclick = function(){
+            randomArray();
+
+            startTime();
+
+            startGame();
+
+            solveBehind();
+            
+        }
+    </script>
+   
+</body>
+</html>
